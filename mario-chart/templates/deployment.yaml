@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "mario-chart.fullname" . }}
+  labels:
+    {{- include "mario-chart.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ include "mario-chart.name" . }}
+  template:
+    metadata:
+      labels:
+        app: {{ include "mario-chart.name" . }}
+    spec:
+      containers:
+      - name: mario
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        ports:
+        - containerPort: 8080
